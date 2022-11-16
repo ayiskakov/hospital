@@ -9,7 +9,7 @@ import (
 
 const (
 	publicServantCreateSQL = `--- name: PublicServantCreate :one
-		INSERT INTO public.public_servant
+		INSERT INTO "public.public_servant"
 			(email, department)
 		VALUES
 			($1, $2)`
@@ -18,19 +18,19 @@ const (
 		SELECT
 			P.email, P.department, U.name, U.surname, U.salary, U.phone, C.cname, C.Population
 		FROM
-			public.public_servant P
+			"public.public_servant" P
 		INNER JOIN
-			public.user U
+			"public.user" U
 		ON
 			P.email = U.email
 		INNER JOIN
-			public.country C
+			"public.country" C
 		ON
 			U.cname = C.cname`
 
 	publicServantUpdateSQL = `--- name: PublicServantUpdate :one
 		UPDATE
-			public.public_servant
+			"public.public_servant"
 		SET
 			department = COALESCE($1, department)
 		WHERE
@@ -39,7 +39,7 @@ const (
 
 	publicServantDeleteSQL = `--- name: PublicServantDelete :exec
 		DELETE FROM
-			public.public_servant
+			"public.public_servant"
 		WHERE
 			email = $1`
 )

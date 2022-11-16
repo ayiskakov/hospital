@@ -9,20 +9,20 @@ import (
 
 const (
 	countryCreateSQL = `--- name: CountryCreate :one
-		INSERT INTO public.country (cname, population)
+		INSERT INTO "public.country" (cname, population)
 		VALUES ($1, $2)`
 
 	countryGetAllSQL = `--- name: CountryGetAll :many
 		SELECT cname, population
-		FROM public.country`
+		FROM "public.country"`
 
 	countryUpdateSQL = `--- name: CountyUpdate :one
-		UPDATE public.country
+		UPDATE "public.country"
 		SET population = $1
 		WHERE cname = $2`
 
 	countryDeleteSQL = `--- name: CountyDelete :one
-		DELETE FROM public.country
+		DELETE FROM "public.country"
 		WHERE cname = $1`
 )
 

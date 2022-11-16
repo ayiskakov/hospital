@@ -5,7 +5,7 @@ services:
     environment:
       - TZ=GMT+6
       - PGTZ=GMT+6
-      - POSTGRES_USER=root
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret
       - POSTGRES_DB=hospital
     ports:

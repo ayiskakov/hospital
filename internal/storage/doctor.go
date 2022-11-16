@@ -10,7 +10,7 @@ import (
 const (
 	doctorCreateSQL = `--- name: DoctorCreate :one
 		INSERT INTO
-			public.doctor (email, degree)
+			"public.doctor" (email, degree)
 		VALUES
 			($1, $2)`
 
@@ -18,19 +18,19 @@ const (
 		SELECT
 			D.email, D.degree, U.name, U.surname, U.salary, U.phone, C.cname, C.Population
 		FROM
-			public.doctor D
+			"public.doctor" D
 		INNER JOIN
-			public.user U
+			"public.user" U
 		ON
 			D.email = U.email
 		INNER JOIN
-			public.country C
+			"public.country" C
 		ON
 			U.cname = C.cname`
 
 	doctorUpdateSQL = `--- name: DoctorUpdate :one
 		UPDATE
-			public.doctor
+			"public.doctor"
 		SET
 			degree = COALESCE($1, degree)
 		WHERE
@@ -39,7 +39,7 @@ const (
 
 	doctorDeleteSQL = `--- name: DoctorDelete :one
 		DELETE FROM
-			public.doctor
+			"public.doctor"
 		WHERE
 			email = $1`
 )
@@ -117,6 +117,6 @@ func (q *Queries) DoctorDelete(ctx context.Context, email string) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to delete doctor")
 	}
-	
+
 	return nil
 }

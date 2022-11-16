@@ -9,11 +9,11 @@ import (
 
 const (
 	userCreateSQL = `--- name: UserCreate :one
-		INSERT INTO public.user (email, name, surname, salary, phone, cname)
+		INSERT INTO "public.user" (email, name, surname, salary, phone, cname)
 		VALUES ($1, $2, $3, $4, $5, $6)`
 
 	userUpdateSQL = `--- name: UserUpdate :one
-		UPDATE public.user
+		UPDATE "public.user"
 		SET
 			email = COALESCE($1, email),
 			name = COALESCE($2, name),
@@ -26,16 +26,16 @@ const (
 		RETURNING email, name, surname, salary, phone, cname`
 
 	userDeleteSQL = `--- name: UserDelete :one
-		DELETE FROM public.user
+		DELETE FROM "public.user"
 		WHERE email = $1`
 
 	userGetAllSQL = `--- name: UserGetAll :many
 		SELECT
 			U.email, U.name, U.surname, U.salary, U.phone, C.cname, C.Population
 		FROM
-			public.user U
+			"public.user" U
 		INNER JOIN
-			public.country C
+			"public.country" C
 		ON
 			U.cname = C.cname`
 )

@@ -10,7 +10,7 @@ import (
 const (
 	diseaseTypeCreateSQL = `--- name: DiseaseTypeCreate :one
 		INSERT INTO 
-		    public.disease_type 
+		    "public.disease_type" 
 		    (description) 
 		VALUES ($1) 
 		RETURNING id`
@@ -19,11 +19,11 @@ const (
 		SELECT
 			id, description
 		FROM
-			public.disease_type`
+			"public.disease_type"`
 
 	diseaseTypeUpdateSQL = `--- name: DiseaseTypeUpdate :one
 		UPDATE
-			public.disease_type
+			"public.disease_type"
 		SET
 			description = COALESCE($1, description)
 		WHERE
@@ -32,13 +32,13 @@ const (
 
 	diseaseTypeDeleteSQL = `--- name: DiseaseTypeDelete :one
 		DELETE FROM
-			public.disease_type
+			"public.disease_type"
 		WHERE
 			id = $1`
 
 	diseaseCreateSQL = `--- name: DiseaseCreate :one
 		INSERT INTO
-			public.disease
+			"public.disease"
 			(id, description, disease_code, pathogen)
 		VALUES
 			($1, $2, $3, $4)`
@@ -47,15 +47,15 @@ const (
 		SELECT
 			D.id, D.description, D.disease_code, D.pathogen, DT.description
 		FROM
-			public.disease D
+			"public.disease" D
 		INNER JOIN
-			public.disease_type DT
+			"public.disease_type" DT
 		ON
 			D.id = DT.id`
 
 	diseaseUpdateSQL = `--- name: DiseaseUpdate :one
 		UPDATE
-			public.disease
+			"public.disease"
 		SET
 			description = COALESCE($1, description),
 			pathogen = COALESCE($3, pathogen),
@@ -68,7 +68,7 @@ const (
 
 	diseaseDeleteSQL = `--- name: DiseaseDelete :one
 		DELETE FROM
-			public.disease
+			"public.disease"
 		WHERE
 			disease_code = $1`
 )

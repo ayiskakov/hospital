@@ -8,7 +8,7 @@ import (
 
 const (
 	specializeCreateSQL = `--- name: SpecializeCreate :one
-		INSERT INTO public.specialize 
+		INSERT INTO "public.specialize" 
 			(id, email)
 		VALUES ($1, $2)`
 
@@ -16,23 +16,23 @@ const (
 		SELECT
 			S.id, S.email, D.degree, U.name, U.surname, U.salary, U.phone, C.cname, C.Population
 		FROM
-			public.specialize S
+			"public.specialize" S
 		INNER JOIN
-			public.doctor D
+			"public.doctor" D
 		ON
 			S.email = D.email
 		INNER JOIN
-			public.user U
+			"public.user" U
 		ON
 			D.email = U.email
 		INNER JOIN
-			public.country C
+			"public.country" C
 		ON
 			U.cname = C.cname`
 
 	specializeDeleteSQL = `--- name: SpecializeDelete :one
 		DELETE FROM
-			public.specialize
+			"public.specialize"
 		WHERE
 			email = $1 AND id = $2`
 )

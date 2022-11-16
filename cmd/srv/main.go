@@ -9,13 +9,12 @@ import (
 	"time"
 
 	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/khanfromasia/hospital/internal/config"
 	handler "github.com/khanfromasia/hospital/internal/delivery/http"
 	"github.com/khanfromasia/hospital/internal/pkg/pgxpool"
 	"github.com/khanfromasia/hospital/internal/storage"
-
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func main() {
@@ -28,13 +27,13 @@ func main() {
 
 	cfg := config.Get()
 
-	m, err := migrate.New("file://database/migrate/", "postgres://root:secret@localhost:5432/hospital?sslmode=disable")
+	m, err := migrate.New("file://migrations", "postgres://postgres:secret@localhost:5432/hospital?sslmode=disable")
 	if err != nil {
-		log.Fatalln("migrate: while connecting", err)
+		log.Fatalln("migrations: while connecting", err)
 	}
 
 	if err = m.Up(); err != nil && err != migrate.ErrNoChange {
-		log.Fatalln("migrate: while migration", err)
+		log.Fatalln("migrations: while migration", err)
 	}
 
 	pool, err := pgxpool.NewPool(ctx, cfg.Database.Dsn)
