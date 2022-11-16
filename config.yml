@@ -3,4 +3,4 @@ rest:
   port: 8000
 
 database:
-  dsn: "host=localhost port=5432 user=root password=secret dbname=hospital sslmode=disable"
+  dsn: "host=localhost port=15432 user=postgres password=secret dbname=hospital sslmode=disable"

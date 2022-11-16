@@ -27,7 +27,7 @@ func main() {
 
 	cfg := config.Get()
 
-	m, err := migrate.New("file://migrations", "postgres://postgres:secret@localhost:5432/hospital?sslmode=disable")
+	m, err := migrate.New("file://migrations", "postgres://postgres:secret@localhost:15432/hospital?sslmode=disable")
 	if err != nil {
 		log.Fatalln("migrations: while connecting", err)
 	}
