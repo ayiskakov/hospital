@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS "public.record";
+DROP TABLE IF EXISTS "public.specialize";
+DROP TABLE IF EXISTS "public.doctor";
+DROP TABLE IF EXISTS "public.public_servant";
+DROP TABLE IF EXISTS "public.user";
+DROP TABLE IF EXISTS "public.discovery";
+DROP TABLE IF EXISTS "public.disease";
+DROP TABLE IF EXISTS "public.country";
+DROP TABLE IF EXISTS "public.disease_type";

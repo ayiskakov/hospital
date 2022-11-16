@@ -1,0 +1,6 @@
+rest:
+  host: 0.0.0.0
+  port: 8000
+
+database:
+  dsn: "host=localhost port=5432 user=root password=secret dbname=hospital sslmode=disable"
