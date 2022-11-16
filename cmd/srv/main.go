@@ -60,11 +60,24 @@ func main() {
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 40 << 20, // 1 MB
-		Handler:        hnd.SetupRoutes(),
+		Handler:        corsMiddleware(hnd.SetupRoutes()),
 	}
 
 	log.Println("HTTP server is running on ", fmt.Sprintf("%s:%d", cfg.Rest.Host, cfg.Rest.Port))
 	if err = srv.Serve(listener); err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }
