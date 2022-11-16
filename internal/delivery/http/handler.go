@@ -51,8 +51,8 @@ func (h *handler) SetupRoutes() *httprouter.Router {
 
 	router.Handler(http.MethodGet, v0+"diseases", h.diseaseGetAll())
 	router.Handler(http.MethodPost, v0+"diseases", h.diseaseCreate())
-	router.Handler(http.MethodPut, v0+"diseases/:id", h.diseaseUpdate())
-	router.Handler(http.MethodDelete, v0+"diseases/:id", h.diseaseDelete())
+	router.Handler(http.MethodPut, v0+"diseases/:disease_code", h.diseaseUpdate())
+	router.Handler(http.MethodDelete, v0+"diseases/:disease_code", h.diseaseDelete())
 
 	router.Handler(http.MethodGet, v0+"discovery", h.discoveryGetAll())
 	router.Handler(http.MethodPost, v0+"discovery", h.discoveryCreate())
