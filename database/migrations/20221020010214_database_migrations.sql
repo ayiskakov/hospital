@@ -1,90 +1,223 @@
--- +goose Up
--- +goose StatementBegin
-CREATE SCHEMA IF NOT EXISTS public;
-
-CREATE TABLE IF NOT EXISTS "public.disease_type" (
+CREATE TABLE IF NOT EXISTS "disease_type" (
     "id" BIGSERIAL PRIMARY KEY,
     "description" VARCHAR(140) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS "public.country" (
+CREATE TABLE IF NOT EXISTS "country" (
     "cname" VARCHAR(50) PRIMARY KEY NOT NULL,
     "population" BIGINT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS "public.disease" (
+CREATE TABLE IF NOT EXISTS "disease" (
     "id" BIGINT NOT NULL,
     "description" VARCHAR(140) NOT NULL,
     "disease_code" VARCHAR(50) UNIQUE NOT NULL,
     "pathogen" VARCHAR(20) NOT NULL,
     PRIMARY KEY ("disease_code"),
-    FOREIGN KEY ("id") REFERENCES "public.disease_type" ("id") ON UPDATE CASCADE
+    FOREIGN KEY ("id") REFERENCES "disease_type" ("id") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "public.discovery" (
+CREATE TABLE IF NOT EXISTS "discovery" (
     "cname" VARCHAR(50) NOT NULL,
     "disease_code" VARCHAR(50) NOT NULL,
     "first_enc_date" DATE NOT NULL,
     PRIMARY KEY ("cname", "disease_code"),
-    FOREIGN KEY ("disease_code") REFERENCES "public.disease" ("disease_code") ON UPDATE CASCADE,
-    FOREIGN KEY ("cname") REFERENCES "public.country" ("cname") ON UPDATE CASCADE
+    FOREIGN KEY ("disease_code") REFERENCES "disease" ("disease_code") ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY ("cname") REFERENCES "country" ("cname") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "public.user" (
+CREATE TABLE IF NOT EXISTS "users" (
     "email" VARCHAR(60) PRIMARY KEY NOT NULL,
     "name" VARCHAR(30) NOT NULL,
     "surname" VARCHAR(40) NOT NULL,
     "salary" INT NOT NULL,
     "phone" VARCHAR(20) NOT NULL,
     "cname" VARCHAR(50) NOT NULL,
-    FOREIGN KEY ("cname") REFERENCES "public.country" ("cname") ON UPDATE CASCADE
+    FOREIGN KEY ("cname") REFERENCES "country" ("cname") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "public.public_servant" (
+CREATE TABLE IF NOT EXISTS "public_servant" (
     "email" VARCHAR(60) PRIMARY KEY NOT NULL,
     "department" VARCHAR(50) NOT NULL,
-    FOREIGN KEY ("email") REFERENCES "public.user" ("email") ON UPDATE CASCADE
+    FOREIGN KEY ("email") REFERENCES "users" ("email") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "public.doctor" (
+CREATE TABLE IF NOT EXISTS "doctor" (
     "email" VARCHAR(60) PRIMARY KEY NOT NULL,
     "degree" VARCHAR(20) NOT NULL,
-    FOREIGN KEY ("email") REFERENCES "public.user" ("email") ON UPDATE CASCADE
+    FOREIGN KEY ("email") REFERENCES "users" ("email") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "public.specialize" (
+CREATE TABLE IF NOT EXISTS "specialize" (
     "id" BIGINT,
     "email" VARCHAR(60) NOT NULL,
     PRIMARY KEY ("id", "email"),
-    FOREIGN KEY ("id") REFERENCES "public.disease_type" ("id") ON UPDATE CASCADE,
-    FOREIGN KEY ("email") REFERENCES "public.doctor" ("email") ON UPDATE CASCADE
+    FOREIGN KEY ("id") REFERENCES "disease_type" ("id") ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY ("email") REFERENCES "doctor" ("email") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "public.record" (
+CREATE TABLE IF NOT EXISTS "record" (
     "email" VARCHAR(60) NOT NULL,
     "cname" VARCHAR(50) NOT NULL,
     "disease_code" VARCHAR(50) NOT NULL,
     "total_deaths" BIGINT NOT NULL,
     "total_patients" BIGINT NOT NULL,
     PRIMARY KEY ("email", "cname", "disease_code"),
-    FOREIGN KEY ("email") REFERENCES "public.public_servant" ("email") ON UPDATE CASCADE,
-    FOREIGN KEY ("cname") REFERENCES "public.country" ("cname") ON UPDATE CASCADE,
-    FOREIGN KEY ("disease_code") REFERENCES "public.disease" ("disease_code") ON UPDATE CASCADE
+    FOREIGN KEY ("email") REFERENCES "public_servant" ("email") ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY ("cname") REFERENCES "country" ("cname") ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY ("disease_code") REFERENCES "disease" ("disease_code") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- +goose StatementEnd
+----------------------------------------------------
 
--- +goose Down
--- +goose StatementBegin
+INSERT INTO "disease_type"
+("description")
+VALUES
+    ('infectious diseases'),
+    ('deficiency diseases'),
+    ('hereditary diseases'),
+    ('physiological diseases'),
+    ('mental diseases'),
+    ('virology'),
+    ('congenital malformations'),
+    ('symptoms, signs, and ill-defined conditions'),
+    ('injury and poisoning'),
+    ('external causes of morbidity and mortality');
 
-DROP TABLE IF EXISTS "public.record";
-DROP TABLE IF EXISTS "public.specialize";
-DROP TABLE IF EXISTS "public.doctor";
-DROP TABLE IF EXISTS "public.public_servant";
-DROP TABLE IF EXISTS "public.user";
-DROP TABLE IF EXISTS "public.discovery";
-DROP TABLE IF EXISTS "public.disease";
-DROP TABLE IF EXISTS "public.country";
-DROP TABLE IF EXISTS "public.disease_type";
+INSERT INTO "country"
+(cname, population)
+VALUES
+    ('Kazakhstan', 19295600),
+    ('China', 1412600000),
+    ('India', 1375586000),
+    ('Japan', 125927902),
+    ('Germany', 84079811),
+    ('France', 67939000),
+    ('United Kingdom', 67886011),
+    ('Italy', 60483973),
+    ('Russia', 146745098),
+    ('United States', 329064917);
 
--- +goose StatementEnd
+
+INSERT INTO "disease"
+("id", "description", "disease_code", "pathogen")
+VALUES
+    (1, 'Hepatitis A', 'B15', 'HAV'),
+    (1, 'Hepatitis B', 'B180', 'HBV'),
+    (1, 'covid-19', 'covid-19', 'SARS-CoV-2'),
+    (1, 'Bacterial poisoning', 'GG1', 'bacteria');
+
+-- Deficiency diseases only
+INSERT INTO "disease"
+("id", "description", "disease_code", "pathogen")
+VALUES
+    (2, 'Scurvy', 'D53.2', 'C deficiency'),
+    (2, 'Rickets', 'E55.0', 'D deficiency'),
+    (2, 'Beriberi', 'E51.1', 'B1 deficiency'),
+    (2, 'Pellagra', 'E52.0', 'bacteria');
+
+-- Hereditary diseases only
+INSERT INTO "disease"
+("id", "description", "disease_code", "pathogen")
+VALUES
+    (3, 'Cystic fibrosis', 'E84.0', 'CFTR mutation'),
+    (3, 'Sickle cell anemia', 'D57.1', 'HBB mutation'),
+    (3, 'Tay-Sachs disease', 'E75.02', 'HEXA mutation'),
+    (3, 'Huntington''s disease', 'G10.0', 'bacteria');
+
+-- Physiological diseases only
+INSERT INTO "disease"
+("id", "description", "disease_code", "pathogen")
+VALUES
+    (4, 'Hypertension', 'I10', 'Unknown'),
+    (4, 'Diabetes', 'E11', 'Unknown'),
+    (4, 'Asthma', 'J45', 'Unknown'),
+    (4, 'Allergy', 'R50', 'bacteria');
+
+
+INSERT INTO "discovery"
+("cname", "disease_code", "first_enc_date")
+VALUES
+    ('Kazakhstan', 'G10.0', '1989-05-09'),
+    ('China', 'R50', '2000-03-02'),
+    ('India', 'GG1', '1976-12-04'),
+    ('Japan', 'B15', '2019-01-01'),
+    ('Russia', 'B15', '2019-01-01'),
+    ('United States', 'B15', '2019-01-01'),
+    ('Germany', 'B15', '2019-01-01'),
+    ('United Kingdom', 'B15', '2019-01-01'),
+    ('France', 'B15', '2019-01-01'),
+    ('Italy', 'B15', '2019-01-01');
+
+
+INSERT INTO "users"
+("email", "name", "surname", "salary", "phone", "cname")
+VALUES
+    ('aibek.tursanov@hospital.com', 'Aibek', 'Tursanov', 1000, '123456789', 'United Kingdom'),
+    ('bekbolat@hospital.com', 'Bekbolat', 'Kerey', 1000, '123456789', 'Kazakhstan'),
+    ('gulmira@hospital.com', 'Gulmira', 'Auezhay', 1000, '123456789', 'China'),
+    ('gulsim@hospital.com', 'Gulsim', 'Bektas', 1000, '123456789', 'India'),
+    ('ahobe@hospital.com', 'Ahobe', 'Koasa', 1000, '123456789', 'Japan'),
+    ('kito@hospital.com', 'Kunai', 'Jeko', 4300, '123456789', 'Japan'),
+    ('erbolat@hospital.com', 'Erbolat', 'Yerlanov', 1000, '123456789', 'Germany'),
+    ('john@hospital.com', 'John', 'Joe', 1000, '123456789', 'France'),
+    ('louvre@hospital.com', 'De', 'Paris', 6500, '123456789', 'France'),
+    ('nurlan@hospital.com', 'Nurlan', 'Karimov', 1000, '123456789', 'Italy'),
+    ('meirbek@hospital.com', 'Meirbek', 'Razorenov', 1000, '123456789', 'Russia'),
+    ('saltanat@hospital.com', 'Saltanat', 'Neikolaeva', 1000, '123456789', 'United States'),
+    ('karakat@hospital.com', 'Karakat', 'Danen', 2300, '123456789', 'Kazakhstan'),
+    ('shomala@hospital.com', 'Shomala', 'Kerey', 2300, '123456789', 'Kazakhstan'),
+    ('yelshi@hospital.com', 'Yelshi', 'Kino', 3900, '123456789', 'Kazakhstan');
+
+INSERT INTO "public_servant"
+("email", "department")
+VALUES
+    ('aibek.tursanov@hospital.com', 'Dept1'),
+    ('saltanat@hospital.com', 'Dept1'),
+    ('meirbek@hospital.com', 'Dept1'),
+    ('nurlan@hospital.com', 'Dept2'),
+    ('erbolat@hospital.com', 'Dept3'),
+    ('shomala@hospital.com', 'Dept4');
+
+INSERT INTO "doctor"
+("email", "degree")
+VALUES
+    ('bekbolat@hospital.com', 'MD'),
+    ('gulmira@hospital.com', 'DO'),
+    ('gulsim@hospital.com', 'MD'),
+    ('ahobe@hospital.com', 'MD'),
+    ('karakat@hospital.com', 'MD'),
+    ('yelshi@hospital.com', 'MD'),
+    ('kito@hospital.com', 'MD'),
+    ('louvre@hospital.com', 'MD'),
+    ('john@hospital.com', 'MD');
+
+INSERT INTO "specialize"
+("id", "email")
+VALUES
+    (6, 'yelshi@hospital.com'),
+    (6, 'john@hospital.com'),
+    (6, 'kito@hospital.com'),
+    (6, 'bekbolat@hospital.com'),
+    (6, 'louvre@hospital.com'),
+    (3, 'bekbolat@hospital.com'),
+    (7, 'bekbolat@hospital.com'),
+    (1, 'john@hospital.com'),
+    (1, 'gulsim@hospital.com'),
+    (7, 'karakat@hospital.com'),
+    (8, 'karakat@hospital.com'),
+    (6, 'ahobe@hospital.com'),
+    (5, 'ahobe@hospital.com');
+
+
+INSERT INTO "record"
+("email", "cname", "disease_code", "total_deaths", "total_patients")
+VALUES
+    ('aibek.tursanov@hospital.com', 'Kazakhstan', 'G10.0', 100, 1000),
+    ('saltanat@hospital.com', 'United States', 'B15', 200, 190000),
+    ('aibek.tursanov@hospital.com', 'China', 'covid-19', 300, 3000),
+    ('aibek.tursanov@hospital.com', 'United States', 'covid-19', 300, 3000),
+    ('erbolat@hospital.com', 'Germany', 'covid-19', 400, 400000),
+    ('erbolat@hospital.com', 'Italy', 'covid-19', 400, 400000),
+    ('erbolat@hospital.com', 'Russia', 'covid-19', 400, 400000),
+    ('erbolat@hospital.com', 'United Kingdom', 'covid-19', 300, 23784);
