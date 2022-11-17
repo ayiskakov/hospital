@@ -61,12 +61,12 @@ func (h *handler) SetupRoutes() *httprouter.Router {
 
 	router.Handler(http.MethodGet, v0+"records", h.recordGetAll())
 	router.Handler(http.MethodPost, v0+"records", h.recordCreate())
-	router.Handler(http.MethodPut, v0+"records/:id", h.recordUpdate())
-	router.Handler(http.MethodDelete, v0+"records/:id", h.recordDelete())
+	router.Handler(http.MethodPut, v0+"records/:email/:cname/:disease_code", h.recordUpdate())
+	router.Handler(http.MethodDelete, v0+"records/:email/:cname/:disease_code", h.recordDelete())
 
 	router.Handler(http.MethodGet, v0+"specialize", h.specializeGetAll())
 	router.Handler(http.MethodPost, v0+"specialize", h.specializeCreate())
-	router.Handler(http.MethodPut, v0+"specialize/:email/:id", h.specializeDelete())
+	router.Handler(http.MethodDelete, v0+"specialize/:email/:id", h.specializeDelete())
 
 	return router
 }

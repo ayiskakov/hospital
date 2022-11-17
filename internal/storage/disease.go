@@ -58,11 +58,11 @@ const (
 			"public.disease"
 		SET
 			description = COALESCE($1, description),
-			pathogen = COALESCE($3, pathogen),
-			id = COALESCE($4, id),
-			disease_code = COALESCE($5, disease_code)
+			pathogen = COALESCE($2, pathogen),
+			id = COALESCE($3, id),
+			disease_code = COALESCE($4, disease_code)
 		WHERE
-			disease_code = $2
+			disease_code = $5
 		RETURNING
 			id, description, disease_code, pathogen`
 

@@ -8,7 +8,7 @@ import (
 
 const (
 	recordCreateSQL = `--- name: RecordCreate :one
-		INSERT INTO "public.records"
+		INSERT INTO "public.record"
 			(email, cname, disease_code, total_deaths, total_patients)
 		VALUES
 			($1, $2, $3, $4, $5)`
@@ -17,15 +17,15 @@ const (
 		SELECT
 			email, cname, disease_code, total_deaths, total_patients
 		FROM
-			"public.records"`
+			"public.record"`
 
 	recordDeleteSQL = `--- name: RecordDelete :one
-		DELETE FROM "public.records"
+		DELETE FROM "public.record"
 		WHERE
 			email = $1 AND cname = $2 AND disease_code = $3`
 
 	recordUpdateSQL = `--- name: RecordUpdate :one
-		UPDATE "public.records"
+		UPDATE "public.record"
 		SET
 			total_deaths = COALESCE($1, total_deaths),
 			total_patients = COALESCE($2, total_patients)

@@ -158,25 +158,16 @@ func (h *handler) doctorUpdate() http.Handler {
 	})
 }
 
-type doctorDeleteRequest struct {
-	Email string `json:"email"`
-}
-
 func (h *handler) doctorDelete() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var req doctorDeleteRequest
-
-		if err := decodeJSONBody(w, r, &req); err != nil {
-			respondError(w, http.StatusBadRequest, "invalid request payload")
-			return
-		}
+		email := httprouter.ParamsFromContext(r.Context()).ByName("email")
 
 		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
 
-			err = q.DoctorDelete(r.Context(), req.Email)
+			err = q.DoctorDelete(r.Context(), email)
 
 			if err != nil {
 				return err
