@@ -32,7 +32,7 @@ func (h *handler) discoveryCreate() http.Handler {
 
 		var discovery entity.Discovery
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -68,7 +68,7 @@ func (h *handler) discoveryGetAll() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var discoveries []entity.Discovery
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -93,7 +93,7 @@ func (h *handler) discoveryDelete() http.Handler {
 		cname := httprouter.ParamsFromContext(r.Context()).ByName("cname")
 		diseaseCode := httprouter.ParamsFromContext(r.Context()).ByName("disease_code")
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -137,7 +137,7 @@ func (h *handler) discoveryUpdate() http.Handler {
 
 		var discovery entity.Discovery
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error

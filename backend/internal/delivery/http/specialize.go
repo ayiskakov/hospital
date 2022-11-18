@@ -30,7 +30,7 @@ func (h *handler) specializeCreate() http.Handler {
 		}
 		var specialize entity.Specialize
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -65,7 +65,7 @@ func (h *handler) specializeDelete() http.Handler {
 		email := httprouter.ParamsFromContext(r.Context()).ByName("email")
 		id := httprouter.ParamsFromContext(r.Context()).ByName("id")
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -98,7 +98,7 @@ func (h *handler) specializeGetAll() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var specializes []entity.Specialize
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error

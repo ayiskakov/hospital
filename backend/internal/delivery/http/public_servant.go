@@ -41,7 +41,7 @@ func (h *handler) publicServantCreate() http.Handler {
 
 		var publicServant entity.PublicServant
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -84,7 +84,7 @@ func (h *handler) publicServantGetAll() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var publicServants []entity.PublicServant
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -127,7 +127,7 @@ func (h *handler) publicServantUpdate() http.Handler {
 
 		var publicServant entity.PublicServant
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -159,7 +159,7 @@ func (h *handler) publicServantDelete() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		email := httprouter.ParamsFromContext(r.Context()).ByName("email")
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			return q.PublicServantDelete(r.Context(), email)

@@ -38,7 +38,7 @@ func (h *handler) userCreate() http.Handler {
 
 		var user entity.User
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -98,7 +98,7 @@ func (h *handler) userUpdate() http.Handler {
 
 		var user entity.User
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -133,7 +133,7 @@ func (h *handler) userDelete() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		email := httprouter.ParamsFromContext(r.Context()).ByName("email")
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -164,7 +164,7 @@ func (h *handler) userGetAll() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var users []entity.User
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error

@@ -33,7 +33,7 @@ func (h *handler) recordCreate() http.Handler {
 		}
 		var record entity.Record
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -82,7 +82,7 @@ func (h *handler) recordGetAll() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var records []entity.Record
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -114,7 +114,7 @@ func (h *handler) recordDelete() http.Handler {
 		diseaseCode := httprouter.ParamsFromContext(r.Context()).ByName("disease_code")
 		email := httprouter.ParamsFromContext(r.Context()).ByName("email")
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
@@ -162,7 +162,7 @@ func (h *handler) recordUpdate() http.Handler {
 
 		var record entity.Record
 
-		err := h.storage.ExecTX(r.Context(), pgx.TxOptions{
+		err := h.storage.Transaction(r.Context(), pgx.TxOptions{
 			IsoLevel: pgx.ReadCommitted,
 		}, func(q *storage.Queries) error {
 			var err error
