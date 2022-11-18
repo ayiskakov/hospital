@@ -1,0 +1,67 @@
+<div>
+  <div class="title-container">
+    <h2 nz-typography>Public Servants</h2>
+    <button nz-button [nzType]="'primary'" (click)="showModal()">create</button>
+  </div>
+  <nz-table #table [nzData]="publicServantList">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Salary</th>
+        <th>Country</th>
+        <th>Degree</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let publicServant of table.data" (click)="view(publicServant)">
+        <td>{{publicServant.user.name}}</td>
+        <td>{{publicServant.user.surname}}</td>
+        <td>{{publicServant.user.email}}</td>
+        <td>{{publicServant.user.phone}}</td>
+        <td>{{publicServant.user.salary}}</td>
+        <td>{{publicServant.user.country.cname}}</td>
+        <td>{{publicServant.department}}</td>
+        <td>
+          <span (click)="delete(publicServant); $event.stopPropagation()" nz-icon nzType="delete" nzTheme="outline"></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Public Servant" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submitForm(form.value)">
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-input-group>
+              <input type="email" nz-input formControlName="email" placeholder="Email" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+<!--        -->
+<!--        <nz-form-item>-->
+<!--          <nz-form-control nzErrorTip="This is a required field">-->
+<!--            <nz-select nz-input formControlName="cname" [nzPlaceHolder]="'Country'">-->
+<!--              <nz-option *ngFor="let country of countryList" [nzValue]="country.cname" [nzLabel]="country.cname">-->
+<!--              </nz-option>-->
+<!--            </nz-select>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-input-group>
+              <input type="text" nz-input formControlName="department" placeholder="Department" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <button nz-button [nzType]="'primary'" [nzLoading]="loading">Save</button>
+      </form>
+    </ng-container>
+  </nz-modal>
+</div>

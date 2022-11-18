@@ -1,0 +1,60 @@
+<div>
+  <div class="title-container">
+    <h2 nz-typography>Discovery</h2>
+    <button nz-button [nzType]="'primary'" (click)="showModal()">create</button>
+  </div>
+  <nz-table #table [nzData]="discoveryList">
+    <thead>
+      <tr>
+        <th>Country Name</th>
+        <th>Disease Code</th>
+        <th>First Encounter Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let discovery of table.data" (click)="view(discovery)">
+        <td>{{discovery.country.cname}}</td>
+        <td>{{discovery.disease.disease_code}}</td>
+        <td>{{discovery.first_enc_date}}</td>
+        <td>
+          <span (click)="delete(discovery); $event.stopPropagation()" nz-icon nzType="delete" nzTheme="outline"></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Discovery" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submitForm(form.value)">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-select nz-input formControlName="cname" [nzPlaceHolder]="'Country'">
+              <nz-option *ngFor="let country of countryList" [nzValue]="country.cname" [nzLabel]="country.cname">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-select nz-input formControlName="disease_code" [nzPlaceHolder]="'Disease'">
+              <nz-option *ngFor="let disease of diseaseList" [nzValue]="disease.disease_code"
+                [nzLabel]="disease.disease_code">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-date-picker nz-input formControlName="first_enc_date" placeholder="First encounter date">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+
+        <button nz-button [nzType]="'primary'" [nzLoading]="loading">Save</button>
+      </form>
+    </ng-container>
+  </nz-modal>
+</div>

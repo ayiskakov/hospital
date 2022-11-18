@@ -1,0 +1,58 @@
+<div>
+  <div class="title-container">
+    <h2 nz-typography>Doctors</h2>
+    <button nz-button [nzType]="'primary'" (click)="showModal()">create</button>
+  </div>
+  <nz-table #table [nzData]="doctorList">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Salary</th>
+        <th>Country</th>
+        <th>Degree</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let doctor of table.data" (click)="view(doctor)">
+        <td>{{doctor.user.name}}</td>
+        <td>{{doctor.user.surname}}</td>
+        <td>{{doctor.user.email}}</td>
+        <td>{{doctor.user.phone}}</td>
+        <td>{{doctor.user.salary}}</td>
+        <td>{{doctor.user.country.cname}}</td>
+        <td>{{doctor.degree}}</td>
+        <td>
+          <span (click)="delete(doctor); $event.stopPropagation()" nz-icon nzType="delete" nzTheme="outline"></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Doctor" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submitForm(form.value)">
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-input-group>
+              <input type="email" nz-input formControlName="email" placeholder="Email" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-input-group>
+              <input type="text" nz-input formControlName="degree" placeholder="Degree" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <button nz-button [nzType]="'primary'" [nzLoading]="loading">Save</button>
+      </form>
+    </ng-container>
+  </nz-modal>
+</div>
