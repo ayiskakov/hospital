@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 engine = None
 try: 
     engine = create_engine(
-        'postgresql://postgres:secret@localhost:15432/hospital?sslmode=disable',
+        'postgresql://postgres:secret@localhost:5432/hospital?sslmode=disable',
     )
     engine.connect()
 except Exception as e:
@@ -24,7 +24,7 @@ with session() as conn:
         SELECT 
             D.disease_code, D.description 
         FROM "disease" D
-        JOIN "discovery" S ON D.disease_code = S.disease_code
+        JOIN "discover" S ON D.disease_code = S.disease_code
         WHERE 
             D.pathogen = :pathogen AND extract('year' from S.first_enc_date) < :year
         """
@@ -43,7 +43,7 @@ print("Query 2: List the name, surname and degree of doctors who are not special
 with session() as conn:
     stmt = text(
         """
-        SELECT
+        SELECT DISTINCT
             U.name, U.surname, D.degree
         FROM "doctor" D
         LEFT JOIN "users" U ON U.email = D.email
@@ -72,7 +72,7 @@ with session() as conn:
             U.name, U.surname, D.degree
         FROM "doctor" D
         LEFT JOIN "users" U ON D.email = U.email
-        LEFT JOIN specialize S ON D.email = S.email
+        JOIN specialize S ON D.email = S.email
         GROUP BY U.name, U.surname, D.degree
         HAVING COUNT(*) > :count
         """
@@ -93,7 +93,7 @@ with session() as conn:
         SELECT
             C.cname, AVG(U.salary)
         FROM doctor D
-        LEFT JOIN specialize S ON D.email = S.email
+        JOIN specialize S ON D.email = S.email
         LEFT JOIN disease_type T ON S.id = T.id
         LEFT JOIN users U on D.email = U.email
         LEFT JOIN country C ON U.cname = C.cname
@@ -189,7 +189,7 @@ print("Query 8: Create an index namely idx_pathogen on the pathogen field.")
 with session() as conn:
     stmt = text(
         """
-        CREATE INDEX idx_pathogen ON disease (pathogen)
+        CREATE INDEX IF NOT EXISTS "idx pathogen"  ON disease (pathogen);
         """
     )
 
@@ -238,7 +238,7 @@ with session() as conn:
     rows = conn.execute(stmt).fetchall()
 
     for row in rows:
-        print(row)
+        print(row.cname)
 
 
 print()
@@ -248,8 +248,8 @@ print("Query 11: Group the diseases by disease type and the total number of pati
 with session() as conn:
     stmt = text(
         """
-        SELECT DISTINCT 
-            T.description, COALESCE(SUM(R.total_patients), 0) AS total_patients
+        SELECT DISTINCT
+            T.description, COALESCE(SUM(R.total_patients-R.total_deaths), 0) AS patients_treated
         FROM disease_type T
         LEFT JOIN disease D ON T.id = D.id
         LEFT JOIN record R ON D.disease_code = R.disease_code

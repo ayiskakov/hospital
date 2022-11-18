@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "disease" (
     FOREIGN KEY ("id") REFERENCES "disease_type" ("id") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "discovery" (
+CREATE TABLE IF NOT EXISTS "discover" (
     "cname" VARCHAR(50) NOT NULL,
     "disease_code" VARCHAR(50) NOT NULL,
     "first_enc_date" DATE NOT NULL,
@@ -135,7 +135,7 @@ VALUES
     (4, 'Allergy', 'R50', 'bacteria');
 
 
-INSERT INTO "discovery"
+INSERT INTO "discover"
 ("cname", "disease_code", "first_enc_date")
 VALUES
     ('Kazakhstan', 'G10.0', '1989-05-09'),
@@ -154,20 +154,24 @@ INSERT INTO "users"
 ("email", "name", "surname", "salary", "phone", "cname")
 VALUES
     ('aibek.tursanov@hospital.com', 'Aibek', 'Tursanov', 1000, '123456789', 'United Kingdom'),
-    ('bekbolat@hospital.com', 'Bekbolat', 'Kerey', 1000, '123456789', 'Kazakhstan'),
-    ('gulmira@hospital.com', 'Gulmira', 'Auezhay', 1000, '123456789', 'China'),
-    ('gulsim@hospital.com', 'Gulsim', 'Bektas', 1000, '123456789', 'India'),
-    ('ahobe@hospital.com', 'Ahobe', 'Koasa', 1000, '123456789', 'Japan'),
+    ('bekbolat@hospital.com', 'Bekbolat', 'Kerey', 1000, '323456789', 'Kazakhstan'),
+    ('gulmira@hospital.com', 'Gulmira', 'Auezhay', 1000, '423456789', 'China'),
+    ('gulsim@hospital.com', 'Gulsim', 'Bektas', 1000, '723456789', 'India'),
+    ('ahobe@hospital.com', 'Ahobe', 'Koasa', 1000, '993456789', 'Japan'),
     ('kito@hospital.com', 'Kunai', 'Jeko', 4300, '123456789', 'Japan'),
-    ('erbolat@hospital.com', 'Erbolat', 'Yerlanov', 1000, '123456789', 'Germany'),
-    ('john@hospital.com', 'John', 'Joe', 1000, '123456789', 'France'),
-    ('louvre@hospital.com', 'De', 'Paris', 6500, '123456789', 'France'),
-    ('nurlan@hospital.com', 'Nurlan', 'Karimov', 1000, '123456789', 'Italy'),
-    ('meirbek@hospital.com', 'Meirbek', 'Razorenov', 1000, '123456789', 'Russia'),
-    ('saltanat@hospital.com', 'Saltanat', 'Neikolaeva', 1000, '123456789', 'United States'),
-    ('karakat@hospital.com', 'Karakat', 'Danen', 2300, '123456789', 'Kazakhstan'),
+    ('erbolat@hospital.com', 'Erbolat', 'Yerlanov', 1000, '188456789', 'Germany'),
+    ('john@hospital.com', 'John', 'Joe', 1000, '156756789', 'France'),
+    ('louvre@hospital.com', 'De', 'Paris', 6500, '345456789', 'France'),
+    ('nurlan@hospital.com', 'Nurlan', 'Karimov', 1000, '127656789', 'Italy'),
+    ('meirbek@hospital.com', 'Meirbek', 'Razorenov', 1000, '2347556789', 'Russia'),
+    ('saltanat@hospital.com', 'Saltanat', 'Neikolaeva', 1000, '4623456789', 'United States'),
+    ('karakat@hospital.com', 'Karakat', 'Danen', 2300, '6423456789', 'Kazakhstan'),
     ('shomala@hospital.com', 'Shomala', 'Kerey', 2300, '123456789', 'Kazakhstan'),
-    ('yelshi@hospital.com', 'Yelshi', 'Kino', 3900, '123456789', 'Kazakhstan');
+    ('yelshi@hospital.com', 'Yelshi', 'Kino', 3900, '123456789', 'Kazakhstan'),
+    ('kirk@hospital.com', 'Clark', 'Ken', 1023, '123523132', 'Russia'),
+    ('ivan@hospital.com', 'Ivan', 'Jperq', 40233, '99523132', 'Russia'),
+    ('kemal@hospital.com', 'Kemal', 'Jamal', 40233, '99523132', 'India'),
+    ('json@hospital.com', 'Geki', 'Qweras', 33332, '123213423', 'Japan');
 
 INSERT INTO "public_servant"
 ("email", "department")
@@ -177,20 +181,25 @@ VALUES
     ('meirbek@hospital.com', 'Dept1'),
     ('nurlan@hospital.com', 'Dept2'),
     ('erbolat@hospital.com', 'Dept3'),
-    ('shomala@hospital.com', 'Dept4');
+    ('kito@hospital.com', 'Dept2'),
+    ('shomala@hospital.com', 'Dept4'),
+    ('kirk@hospital.com', 'Dept5'),
+    ('ivan@hospital.com', 'Dept4'),
+    ('kemal@hospital.com', 'Dept3');
 
 INSERT INTO "doctor"
 ("email", "degree")
 VALUES
-    ('bekbolat@hospital.com', 'MD'),
-    ('gulmira@hospital.com', 'DO'),
-    ('gulsim@hospital.com', 'MD'),
-    ('ahobe@hospital.com', 'MD'),
-    ('karakat@hospital.com', 'MD'),
-    ('yelshi@hospital.com', 'MD'),
-    ('kito@hospital.com', 'MD'),
-    ('louvre@hospital.com', 'MD'),
-    ('john@hospital.com', 'MD');
+    ('bekbolat@hospital.com', 'QQ'),
+    ('gulmira@hospital.com', 'WW'),
+    ('gulsim@hospital.com', 'RR'),
+    ('ahobe@hospital.com', 'TT'),
+    ('karakat@hospital.com', 'SS'),
+    ('yelshi@hospital.com', 'QQ'),
+    ('kito@hospital.com', 'RR'),
+    ('louvre@hospital.com', 'SS'),
+    ('john@hospital.com', 'MD'),
+    ('json@hospital.com', 'SS');
 
 INSERT INTO "specialize"
 ("id", "email")
@@ -213,11 +222,13 @@ VALUES
 INSERT INTO "record"
 ("email", "cname", "disease_code", "total_deaths", "total_patients")
 VALUES
-    ('aibek.tursanov@hospital.com', 'Kazakhstan', 'G10.0', 100, 1000),
-    ('saltanat@hospital.com', 'United States', 'B15', 200, 190000),
-    ('aibek.tursanov@hospital.com', 'China', 'covid-19', 300, 3000),
-    ('aibek.tursanov@hospital.com', 'United States', 'covid-19', 300, 3000),
-    ('erbolat@hospital.com', 'Germany', 'covid-19', 400, 400000),
-    ('erbolat@hospital.com', 'Italy', 'covid-19', 400, 400000),
-    ('erbolat@hospital.com', 'Russia', 'covid-19', 400, 400000),
-    ('erbolat@hospital.com', 'United Kingdom', 'covid-19', 300, 23784);
+    ('aibek.tursanov@hospital.com', 'Kazakhstan', 'G10.0', 2342, 34223),
+    ('saltanat@hospital.com', 'United States', 'B15', 32413, 190000),
+    ('aibek.tursanov@hospital.com', 'China', 'covid-19', 43434, 321312),
+    ('aibek.tursanov@hospital.com', 'United States', 'covid-19', 42300, 33000),
+    ('erbolat@hospital.com', 'Germany', 'covid-19', 5653, 432000),
+    ('erbolat@hospital.com', 'Italy', 'covid-19', 4333, 402100),
+    ('erbolat@hospital.com', 'Russia', 'covid-19', 2334, 487000),
+    ('erbolat@hospital.com', 'United Kingdom', 'covid-19', 300, 23784),
+    ('kirk@hospital.com', 'India', 'B15', 5345, 545445),
+    ('kirk@hospital.com', 'India', 'E75.02', 545, 32111);
