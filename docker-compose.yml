@@ -15,9 +15,7 @@ services:
     ports:
       - "5432:5432"
   backend:
-    build:
-      context: backend
-      dockerfile: Dockerfile
+    image: khanfromasiaq/hospital-backend:latest
     container_name: hsp_api
     restart: always
     ports:
@@ -28,9 +26,7 @@ services:
       - services-network
  
   ng-client:
-    build:
-      context: ng-client
-      dockerfile: Dockerfile
+    image: khanfromasiaq/ng-client:latest
     container_name: ng-client
     restart: always
     ports:
@@ -47,7 +43,7 @@ services:
       - "80:80"
     depends_on:
       - ng-client
-      # - hsp_api
+      - hsp_api
     networks:
       - services-network
 
