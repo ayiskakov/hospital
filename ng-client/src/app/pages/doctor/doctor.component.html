@@ -35,11 +35,21 @@
     <ng-container *nzModalContent>
       <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submitForm(form.value)">
 
-        <nz-form-item>
+        <!-- <nz-form-item>
           <nz-form-control nzErrorTip="This is a required field">
             <nz-input-group>
               <input type="email" nz-input formControlName="email" placeholder="Email" />
             </nz-input-group>
+          </nz-form-control>
+        </nz-form-item> -->
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="This is a required field">
+            <nz-select nz-input formControlName="email" [nzPlaceHolder]="'Email'">
+              <nz-option *ngFor="let user of userList" [nzValue]="user.email"
+                [nzLabel]="user.email">
+              </nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
 

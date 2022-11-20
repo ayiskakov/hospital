@@ -22,7 +22,7 @@ const (
 		ON
 			S.email = D.email
 		INNER JOIN
-			"public.user" U
+			"public.users" U
 		ON
 			D.email = U.email
 		INNER JOIN

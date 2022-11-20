@@ -20,7 +20,7 @@ const (
 		FROM
 			"public.doctor" D
 		INNER JOIN
-			"public.user" U
+			"public.users" U
 		ON
 			D.email = U.email
 		INNER JOIN

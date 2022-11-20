@@ -21,6 +21,7 @@ type Rest struct {
 
 type Database struct {
 	Dsn string `yaml:"dsn"`
+	Url string `yaml:"url"`
 }
 
 // Config - contains all configuration parameters in config package.

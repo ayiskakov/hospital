@@ -20,7 +20,7 @@ const (
 		FROM
 			"public.public_servant" P
 		INNER JOIN
-			"public.user" U
+			"public.users" U
 		ON
 			P.email = U.email
 		INNER JOIN

@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: hospital
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    networks:
+      - services-network
+    ports:
+      - "5432:5432"
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: hsp_api
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - services-network
+ 
+  ng-client:
+    build:
+      context: ng-client
+      dockerfile: Dockerfile
+    container_name: ng-client
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - services-network
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - ng-client
+      # - hsp_api
+    networks:
+      - services-network
+
+networks:
+  services-network:
+    driver: bridge
+
+    

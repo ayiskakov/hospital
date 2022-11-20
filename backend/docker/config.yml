@@ -1,0 +1,7 @@
+rest:
+  host: 0.0.0.0
+  port: 8000
+
+database:
+  dsn: "host=postgres port=5432 user=postgres password=secret dbname=hospital sslmode=disable"
+  url: "postgres://postgres:secret@postgres:5432/hospital?sslmode=disable"

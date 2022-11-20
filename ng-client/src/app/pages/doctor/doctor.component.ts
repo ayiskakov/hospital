@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CountryDto, DoctorDto } from 'src/app/core/app-api/dto';
+import {CountryDto, DiseaseDto, DoctorDto, UserDto} from 'src/app/core/app-api/dto';
 import { AppApiService } from "../../core/app-api/app-api.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class DoctorComponent implements OnInit {
   doctorList: DoctorDto[] = [];
   countryList: CountryDto[] = [];
+  userList: UserDto[] = [];
   isVisible: boolean = false;
   isEditing: boolean = false;
   loading: boolean = false;
@@ -31,6 +32,15 @@ export class DoctorComponent implements OnInit {
           this.countryList = res.countries;
         } else {
           this.countryList = [];
+        }
+      }
+    })
+    this.api.getUserList().subscribe({
+      next: (res: any) => {
+        if (res.users) {
+          this.userList = res.users;
+        } else {
+          this.userList = [];
         }
       }
     })

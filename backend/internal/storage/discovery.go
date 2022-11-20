@@ -9,7 +9,7 @@ import (
 
 const (
 	discoveryCreateSQL = `--- name: DiscoveryCreate :one
-		INSERT INTO "public.discovery" 
+		INSERT INTO "public.discover" 
 			(cname, disease_code, first_enc_date)
 		VALUES ($1, $2, $3)`
 
@@ -17,7 +17,7 @@ const (
 		SELECT
 			C.cname, C.population, DS.disease_code, D.description, D.pathogen, DS.first_enc_date, D.id, DT.description
 		FROM
-			"public.discovery" DS
+			"public.discover" DS
 		INNER JOIN
 			"public.country" C
 		ON
@@ -33,7 +33,7 @@ const (
 
 	discoveryUpdateSQL = `--- name: DiscoveryUpdate :one
 		UPDATE
-			"public.discovery"
+			"public.discover"
 		SET
 			cname = COALESCE($1, cname),
 			disease_code = COALESCE($2, disease_code),
@@ -43,7 +43,7 @@ const (
 		RETURNING cname, disease_code, first_enc_date`
 
 	discoveryDeleteSQL = `--- name: DiscoveryDelete :exec
-		DELETE FROM "public.discovery"
+		DELETE FROM "public.discover"
 		WHERE		
 			cname = $1 AND disease_code = $2`
 )

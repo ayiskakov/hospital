@@ -17,8 +17,12 @@ import (
 	"github.com/khanfromasia/hospital/backend/internal/storage"
 )
 
-func main() {
+const (
+	MigrationsDir = "file://migrations"
+)
 
+func main() {
+	time.Sleep(5 * time.Second)
 	ctx := context.Background()
 
 	if err := config.ReadConfigYML("./config.yml"); err != nil {
@@ -27,7 +31,7 @@ func main() {
 
 	cfg := config.Get()
 
-	m, err := migrate.New("file://migrations", "postgres://postgres:secret@localhost:15432/hospital?sslmode=disable")
+	m, err := migrate.New(MigrationsDir, cfg.Database.Url)
 	if err != nil {
 		log.Fatalln("migrations: while connecting", err)
 	}
